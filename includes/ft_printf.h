@@ -6,7 +6,7 @@
 /*   By: jla-chon <jla-chon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 23:41:30 by snek              #+#    #+#             */
-/*   Updated: 2023/11/28 18:38:53 by jla-chon         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:39:10 by jla-chon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ int			ft_setchr(char *str, char c);
 void		ft_incr(int *a, int *b);
 void		ft_wrstr(char *str, int *res);
 void		ft_printer(char c, int *cur, int *res);
+void		ft_tabler(int table[4], int size, int totalsize, int actualsize);
 
 #endif

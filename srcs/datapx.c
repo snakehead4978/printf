@@ -6,7 +6,7 @@
 /*   By: jla-chon <jla-chon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 00:55:44 by snek              #+#    #+#             */
-/*   Updated: 2023/11/28 18:30:52 by jla-chon         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:32:13 by jla-chon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,8 @@ void	ft_datap1(t_sec a, void *data, int *res)
 	actualsize = ft_hexcount(num);
 	size = 0;
 	totalsize = ft_tsizer(a, &size, actualsize, 1);
-	ind[0] = size;
-	ind[1] = totalsize;
+	ft_tabler(ind, size, totalsize, actualsize);
 	ind[2] = 1;
-	ind[3] = actualsize;
 	*res = *res + totalsize;
 	ft_nump(a, ind, num, ft_hexp);
 }
@@ -86,10 +84,13 @@ void	ft_datax1(t_sec a, unsigned int data, int *res)
 	actualsize = ft_hexcount(num);
 	size = 0;
 	totalsize = ft_tsizer(a, &size, actualsize, 1);
-	ind[0] = size;
-	ind[1] = totalsize;
+	if (!data && a.flags[4])
+	{
+		totalsize -= 2;
+		size -= 2;
+	}
+	ft_tabler(ind, size, totalsize, actualsize);
 	ind[2] = 1;
-	ind[3] = actualsize;
 	if (!data && !a.field[0] && a.field[1] && !a.field[2])
 		return ;
 	*res = *res + totalsize;

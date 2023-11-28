@@ -6,7 +6,7 @@
 /*   By: jla-chon <jla-chon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 00:45:26 by snek              #+#    #+#             */
-/*   Updated: 2023/11/28 16:19:31 by jla-chon         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:43:01 by jla-chon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	ft_printf(const char *str, ...)
 	cur = 0;
 	res = 0;
 	if (!str)
-		return (0);
+		return (-1);
 	va_start(ap, str);
 	while (str[cur])
 	{
