@@ -3,27 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   datapx.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snek <snek@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jla-chon <jla-chon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 00:55:44 by snek              #+#    #+#             */
-/*   Updated: 2023/11/28 00:59:53 by snek             ###   ########.fr       */
+/*   Updated: 2023/11/28 18:30:52 by jla-chon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	ft_hexp(unsigned long int num)
+static void	ft_hexp(unsigned long int num, int i)
 {
+	if (!num && !i)
+	{
+		write(1, " ", 1);
+		return ;
+	}
 	if (num >= 16)
-		ft_hexp(num / 16);
-	write(1, "0123456789abcdef" + num % 16, 1);
+		ft_hexp(num / 16, i + 1);
+	write(1, &("0123456789abcdef"[num % 16]), 1);
 }
 
-static void	ft_hexxp(unsigned long int num)
+static void	ft_hexxp(unsigned long int num, int i)
 {
+	if (!num && !i)
+	{
+		write(1, " ", 1);
+		return ;
+	}
 	if (num >= 16)
-		ft_hexp(num / 16);
-	write(1, "0123456789ABCDEF" + num % 16, 1);
+		ft_hexxp(num / 16, i + 1);
+	write(1, &("0123456789ABCDEF"[num % 16]), 1);
 }
 
 static int	ft_hexcount(unsigned long int num)
@@ -41,44 +51,47 @@ static int	ft_hexcount(unsigned long int num)
 
 void	ft_datap1(t_sec a, void *data, int *res)
 {
-	int	size;
-	int	totalsize;
-	int	ind[3];
+	int					size;
+	int					totalsize;
+	int					actualsize;
+	int					ind[4];
 	unsigned long int	num;
 
 	num = (unsigned long int)data;
 	if (!data)
 	{
-		ft_wrstr("(nil)", res);
+		ft_ppzero(a, res);
 		return ;
 	}
-	size = ft_flagger(a, ft_hexcount(num), 1, 1);
-	totalsize = ft_tsizer(a, size);
+	actualsize = ft_hexcount(num);
+	size = 0;
+	totalsize = ft_tsizer(a, &size, actualsize, 1);
 	ind[0] = size;
 	ind[1] = totalsize;
 	ind[2] = 1;
+	ind[3] = actualsize;
 	*res = *res + totalsize;
 	ft_nump(a, ind, num, ft_hexp);
 }
 
 void	ft_datax1(t_sec a, unsigned int data, int *res)
 {
-	int	size;
-	int	totalsize;
-	int	ind[3];
+	int					size;
+	int					totalsize;
+	int					actualsize;
+	int					ind[4];
 	unsigned long int	num;
 
 	num = (unsigned long int)data;
-	if (!data)
-	{
-		ft_pzero(a, res);
-		return ;
-	}
-	size = ft_flagger(a, ft_hexcount(num), 1, 1);
-	totalsize = ft_tsizer(a, size);
+	actualsize = ft_hexcount(num);
+	size = 0;
+	totalsize = ft_tsizer(a, &size, actualsize, 1);
 	ind[0] = size;
 	ind[1] = totalsize;
 	ind[2] = 1;
+	ind[3] = actualsize;
+	if (!data && !a.field[0] && a.field[1] && !a.field[2])
+		return ;
 	*res = *res + totalsize;
 	if (a.type == 'X')
 		ft_nump(a, ind, num, ft_hexxp);

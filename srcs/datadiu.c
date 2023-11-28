@@ -3,20 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   datadiu.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snek <snek@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jla-chon <jla-chon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 00:57:24 by snek              #+#    #+#             */
-/*   Updated: 2023/11/28 00:57:59 by snek             ###   ########.fr       */
+/*   Updated: 2023/11/28 18:26:35 by jla-chon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	ft_intp(unsigned long int num)
+static void	ft_intp(unsigned long int num, int i)
 {
+	if (!num && !i)
+	{
+		write(1, " ", 1);
+		return ;
+	}
 	if (num >= 10)
-		ft_intp(num / 10);
-	write(1, "0123456789" + num % 10, 1);
+		ft_intp(num / 10, i + 1);
+	write(1, &("0123456789"[num % 10]), 1);
 }
 
 static int	ft_intcount(unsigned long int num)
@@ -34,42 +39,52 @@ static int	ft_intcount(unsigned long int num)
 
 void	ft_datad1(t_sec a, int data, int *res)
 {
-	int	size;
-	int	totalsize;
-	int	ind[3];
-	unsigned long int	num = (unsigned long int)data;
+	int					size;
+	int					totalsize;
+	int					actualsize;
+	int					ind[4];
+	unsigned long int	num;
 
-	printf("%d %d %d %d %d %d %d %d\n", a.field[0], a.field[1], a.field[2], a.flags[0], a.flags[1], a.flags[2], a.flags[3], a.flags[4]);
-	num = data;
+	num = (unsigned long int)data;
 	a.flags[4] = 0;
 	ind[2] = 1;
 	if (data < 0)
 	{
-		num = data * -1;
+		num = (unsigned long int)data * -1;
 		ind[2] = -1;
 	}
-	size = ft_flagger(a, ft_intcount(num), 0, ind[2]);
-	totalsize = ft_tsizer(a, size);
+	actualsize = ft_intcount(num);
+	size = 0;
+	totalsize = ft_tsizer(a, &size, actualsize, ind[2]);
 	ind[0] = size;
 	ind[1] = totalsize;
+	ind[3] = actualsize;
+	if (!data && !a.field[0] && a.field[1] && !a.field[2])
+		return ;
 	*res = *res + totalsize;
 	ft_nump(a, ind, num, ft_intp);
 }
 
 void	ft_datau1(t_sec a, unsigned int data, int *res)
 {
-	int	size;
-	int	totalsize;
-	int	ind[3];
+	int					size;
+	int					totalsize;
+	int					actualsize;
+	int					ind[4];
 	unsigned long int	num;
-	
+
 	num = (unsigned long int)data;
 	a.flags[4] = 0;
-	size = ft_flagger(a, ft_intcount(num), 0, 1);
-	totalsize = ft_tsizer(a, size);
+	size = 0;
+	actualsize = ft_intcount(num);
+	size = 0;
+	totalsize = ft_tsizer(a, &size, actualsize, 1);
 	ind[0] = size;
 	ind[1] = totalsize;
 	ind[2] = 1;
+	ind[3] = actualsize;
+	if (!data && !a.field[0] && a.field[1] && !a.field[2])
+		return ;
 	*res = *res + totalsize;
 	ft_nump(a, ind, num, ft_intp);
 }

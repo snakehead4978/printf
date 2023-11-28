@@ -3,20 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   mainfuncs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snek <snek@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jla-chon <jla-chon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 00:45:26 by snek              #+#    #+#             */
-/*   Updated: 2023/11/28 01:05:41 by snek             ###   ########.fr       */
+/*   Updated: 2023/11/28 16:19:31 by jla-chon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	ft_fieldparser1(char *str, int *cur, int *res, t_sec *a)
+static void	ft_fieldparser1(char *str, int *cur, t_sec *a)
 {
 	int		n;
-	char	*tmp;
-	size_t	size;
 
 	n = ft_atoi(str + *cur);
 	while (str[*cur] <= '9' && str[*cur] >= '0')
@@ -35,7 +33,7 @@ static void	ft_fieldparser1(char *str, int *cur, int *res, t_sec *a)
 		(*cur)++;
 }
 
-static t_sec	ft_flagparser1(char *str, int *cur, int *res)
+static t_sec	ft_flagparser1(char *str, int *cur)
 {
 	t_sec	a;
 	int		j;
@@ -51,7 +49,7 @@ static t_sec	ft_flagparser1(char *str, int *cur, int *res)
 		a.flags[j] = 1;
 		(*cur)++;
 	}
-	ft_fieldparser1(str, cur, res, &a);
+	ft_fieldparser1(str, cur, &a);
 	a.type = str[(*cur)++];
 	return (a);
 }
@@ -91,7 +89,7 @@ int	ft_printf(const char *str, ...)
 		if (str[cur] == '%')
 		{
 			cur++;
-			a = ft_flagparser1((char *)str, &cur, &res);
+			a = ft_flagparser1((char *)str, &cur);
 			ft_args(a, &ap, &res);
 		}
 		else
